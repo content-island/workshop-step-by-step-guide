@@ -8,7 +8,6 @@ We’re going to build the following site:
 
 It will include:
 
-- A mini “About” section.
 - A homepage that displays a list of posts.
 - A post page that shows the content of a single post.
 - A full “About” page that presents the author’s experience.
