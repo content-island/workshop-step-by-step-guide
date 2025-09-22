@@ -140,7 +140,9 @@ const { type } = Astro.props;
 + const miniBio = await getMiniBio();
 ---
 
-{type === 'hero' ? <MiniBioHero /> : <MiniBioCard />}
+- {type === 'hero' ? <MiniBioHero /> : <MiniBioCard />}
++ {type === 'hero' ? <MiniBioHero /> : <MiniBioCard content={miniBio} />}
+
 ```
 
 We will start by passig this info to the MiniBioCard component:
@@ -171,7 +173,9 @@ import ShapeRectangle from '#assets/shapes/rectangle.svg';
 ---
 ```
 
-And then the bindings:
+Let's check that is being received correctly:
+
+````diff
 
 _./src/pods/mini-bio/components/mini-bio-card.astro_
 
@@ -180,6 +184,10 @@ _./src/pods/mini-bio/components/mini-bio-card.astro_
   class="bg-primary-50 dark:bg-primary-100 relative hidden overflow-clip rounded-2xl p-6 lg:block"
   aria-labelledby="about-me-aside-heading"
 >
++  <div class="relative z-10 flex flex-col items-center justify-center gap-6">
++    <h2 class="font-geist w-full font-bold" id="about-me-aside-heading">{content.title}</h2>
++  </div>
+
   <!-- Decorative shapes -->
   <div class="text-primary-500/25 absolute top-[-48%] left-[-30%] h-[243px] w-[420px]" aria-hidden="true">
     <ShapeRectangle />
@@ -188,11 +196,41 @@ _./src/pods/mini-bio/components/mini-bio-card.astro_
     <ShapeOval />
   </div>
 </section>
-```
-
+````
 
 Let's check the result in the browser:
 
 ```bash
 npm run dev
+```
+
+And let's move on with the rest of the content
+
+_./src/pods/mini-bio/components/mini-bio-card.astro_
+
+```diff
+    <h2 class="font-geist w-full font-bold" id="about-me-aside-heading">{content.title}</h2>
+
++    <div class="flex flex-col items-center justify-center gap-2 text-center">
++      <div class="h-24 w-24">
++        <img
++          alt={content.imageAlt}
++          class="block h-full w-full rounded-full object-cover"
++          height="80"
++          src={content.image.url}
++          width="80"
++        />
++      </div>
++
++      <span class="text-tbase-500/90 font-bold">{content.name}</span>
++      <span class="text-primary-500 font-semibold">{content.role}</span>
++      <p class="text-sm">
++        {content.description}
++      </p>
++    </div>
++
++    <ContactButtons />
+  </div>
+
+  <!-- Decorative shapes -->
 ```
