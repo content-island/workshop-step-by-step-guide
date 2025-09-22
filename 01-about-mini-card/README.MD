@@ -2,21 +2,23 @@
 
 # HCMS
 
-As we saw in our previous example, we can add a collection of markdown and metadata inside a folder in our project. This is a great way to manage content for a small project, but as our project grows, we might want to consider using a Headless CMS (HCMS) to manage our content.
+In the previous example, we saw how to add a collection of **markdown** and metadata inside a folder in our project. This is a convenient way to manage content for small projects.
 
-In this case we have all the info available in a Content Islan Project.
+However, as the project grows, it’s worth considering a **Headless CMS (HCMS)** to manage content in a more scalable way.
 
-> Tour on the Model and the data
+In this case, all the information is already available in a **Content Island project**.
+
+> Tour of the model and the data
 
 # Setup
 
-In order to access this data Content Island already provides a client api librar,y let's install it:
+To access this data, Content Island provides a **client API library**. Let’s install it:
 
 ```bash
 npm install @content-island/api-client
 ```
 
-To be able to access the data we need to provide an access token, in this case we will use a secret token that you can find in your Content Island project settings.
+To fetch the data, we need to provide an **access token**. In this case, we’ll use a **secret token**, which you can find in your Content Island project settings.
 
 _.env_
 
@@ -24,7 +26,7 @@ _.env_
 CONTENT_ISLAND_SECRET_TOKEN=98bfcafff2e649ed1fccec36abde3379
 ```
 
-We are going to type this variable as a server environment variable in Astro:
+Next, we’ll define this variable as a **server environment variable** in Astro:
 
 _./astro.config.mjs_
 
@@ -45,14 +47,14 @@ export default defineConfig({
 +        context: "server",
 +        access: "secret",
 +        optional: false,
-+       default: "INFORM_VALID_TOKEN",
++        default: "INFORM_VALID_TOKEN",
 +      }),
 +    },
 +  },
 });
 ```
 
-Let's create an instance of the client:
+Now let’s create an instance of the client:
 
 _./src/lib/client.ts_
 
@@ -71,18 +73,17 @@ export default client;
 
 The author profile section is used in two places:
 
-- A minibio card.
-- A minibio hero, that is used in the about page.
+- A **mini-bio card**
+- A **mini-bio hero**, displayed on the _About_ page
 
-So let's create a pod that will fetch the author profile data and we will use it in both places.
+We’ll create a **pod** to fetch the author profile data and use it in both places.
 
-There's already some plumbing in place:
+Some wiring is already in place:
 
-- Index pages uses pods/mini-bio.
+- Index pages use `pods/mini-bio`.
+- The `mini-bio` pod uses two components: **MiniBioCard** and **MiniBioHero**, depending on the props it receives.
 
-- mini-bio pod uses two components, MiniBioCard and MiniBioHero depending on the props type it receives.
-
-Let's extract the model from the Content Island project:
+Let’s start by extracting the model from the Content Island project:
 
 **COPY FROM CONTENT ISLAND PROJECT**
 
@@ -105,7 +106,7 @@ _./src/pods/mini-bio/mini-bio.model.ts_
 export type MiniBioType = 'hero' | 'card';
 ```
 
-Now let's add an api to load the author profile data:
+Next, let’s add an API to load the author profile data:
 
 _./src/pods/mini-bio/mini-bio.api.ts_
 
@@ -119,7 +120,7 @@ export const getMiniBio = async () =>
   });
 ```
 
-Let's use it in the mini-bio pod:
+Now let’s use it in the mini-bio pod:
 
 _./src/pods/mini-bio/mini-bio.pod.ts_
 
@@ -145,7 +146,7 @@ const { type } = Astro.props;
 
 ```
 
-We will start by passig this info to the MiniBioCard component:
+We’ll start by passing this data to the **MiniBioCard** component:
 
 _./src/pods/mini-bio/mini-bio.pod.ts_
 
@@ -153,9 +154,9 @@ _./src/pods/mini-bio/mini-bio.pod.ts_
 {type === 'hero' ? <MiniBioHero /> : <MiniBioCard />}
 ```
 
-And bindg the info to the _MiniBioCard_ component:
+And binding the data inside the _MiniBioCard_ component.
 
-First the prop:
+First, define the prop:
 
 _./src/pods/mini-bio/components/mini-bio-card.astro_
 
@@ -173,10 +174,9 @@ import ShapeRectangle from '#assets/shapes/rectangle.svg';
 ---
 ```
 
-Let's check that is being received correctly:
+Let’s confirm the data is being received correctly:
 
 ````diff
-
 _./src/pods/mini-bio/components/mini-bio-card.astro_
 
 ```diff
@@ -198,13 +198,13 @@ _./src/pods/mini-bio/components/mini-bio-card.astro_
 </section>
 ````
 
-Let's check the result in the browser:
+Check the result in the browser:
 
 ```bash
 npm run dev
 ```
 
-And let's move on with the rest of the content
+Now let’s move on and display the rest of the content:
 
 _./src/pods/mini-bio/components/mini-bio-card.astro_
 
@@ -234,3 +234,56 @@ _./src/pods/mini-bio/components/mini-bio-card.astro_
 
   <!-- Decorative shapes -->
 ```
+
+That works nicely 🎉 — now let’s do the same for the **MiniBioHero** component.
+
+If you navigate to the _About_ page right now, you’ll see it’s empty. Since we already have the data fetching in place, we just need to pass the data to the **MiniBioHero** component:
+
+_./src/pods/mini-bio/mini-bio.pod.astro_
+
+```diff
+- {type === 'hero' ? <MiniBioHero /> : <MiniBioCard content={miniBio} />}
++ {type === 'hero' ? <MiniBioHero content={miniBio} /> : <MiniBioCard content={miniBio} />}
+```
+
+And update the _mini-bio-hero.astro_ component:
+
+_./src/pods/mini-bio/components/mini-bio-hero.astro_
+
+```diff
+---
+import Hero from '#components/hero.astro';
++ import type { MiniBio } from '../mini-bio.model';
+
++ interface Props {
++  content: MiniBio;
++ }
++ const { content } = Astro.props;
+---
+
+- <Hero ariaLabelledby="about-hero-heading" />
++ <Hero ariaLabelledby="about-hero-heading">
++  <div class="flex flex-col justify-center gap-6 md:flex-row md:gap-10">
++    <div class="h-[120px] w-[120px] md:h-[240px] md:w-[240px]">
++      <img src={content.image.url} alt={content.imageAlt} class="h-full w-full rounded-full object-cover" />
++    </div>
++    <div class="flex max-w-[55ch] flex-1 flex-col justify-center gap-4">
++      <div>
++        <h1 class="text-primary-700 text-5xl font-bold" id="about-hero-heading">{content.name}</h1>
++        <p class="text-primary-500 font-semibold">{content.role}</p>
++      </div>
++      <p>
++        {content.description}
++      </p>
++    </div>
++  </div>
+</Hero>
+```
+
+Finally, check the result:
+
+```bash
+npm run dev
+```
+
+And that’s it 🎉 — now we have both the **mini-bio card** and the **mini-bio hero** fully working with live data.
