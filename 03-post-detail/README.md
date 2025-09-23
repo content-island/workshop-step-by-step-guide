@@ -226,8 +226,7 @@ interface Props {
 const { gobackText, publishedText, date } = Astro.props;
 ---
 
-<!-- Article Header -->
-<div class="flex items-start justify-between">
+<header class="flex items-start justify-between">
   <a href="/" class="hover:text-primary-600 flex items-center gap-2 font-semibold transition-colors">
     <ArrowLeftIcon />
     {gobackText}
@@ -245,7 +244,7 @@ const { gobackText, publishedText, date } = Astro.props;
       }
     </time>
   </p>
-</div>
+</header>
 ```
 
 _src/pods/post/post.pod.astro_
