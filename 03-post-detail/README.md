@@ -300,7 +300,7 @@ _src/pods/post/components/body.astro_
     <div class="flex items-center">
       <button
         type="button"
-        class="group w-fit cursor-pointer rounded-full bg-white p-1 transition-colors duration-300"
+        class="group w-fit cursor-pointer rounded-full p-1 transition-colors duration-300"
         aria-label="Like"
       >
         <HeartIcon class="h-5.5 w-5.5 transition-colors duration-300 group-hover:text-red-500" />

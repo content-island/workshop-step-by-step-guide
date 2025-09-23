@@ -1,18 +1,18 @@
 # 04 React Integration
 
-We mentioned that Astro can easily integrate with your favorite frameworks. Let’s see how to do that with React.  
+We mentioned that Astro can easily integrate with your favorite frameworks. Let’s see how to do that with React.
 
-As a quick practice exercise, we’re going to implement a *cool* like button using React. (Of course, this could be done with plain vanilla JavaScript, but here we want to practice React.)  
+As a quick practice exercise, we’re going to implement a _cool_ like button using React. (Of course, this could be done with plain vanilla JavaScript, but here we want to practice React.)
 
 ## Step 1: Install React
 
-Let’s install the React integration for Astro:  
+Let’s install the React integration for Astro:
 
 ```bash
 npm install @astrojs/react
 ```
 
-Now update the `astro.config.mjs` file to add the React integration:  
+Now update the `astro.config.mjs` file to add the React integration:
 
 ```diff
 // @ts-check
@@ -41,20 +41,20 @@ export default defineConfig({
 
 ## Step 2: Create the React component
 
-Now let’s create the React component for our like button.  
+Now let’s create the React component for our like button.
 
-For simplicity, we’ll just store the number of likes in memory (using `localStorage`). In a real-world app, you’d probably want to persist this in a database.  
+For simplicity, we’ll just store the number of likes in memory (using `localStorage`). In a real-world app, you’d probably want to persist this in a database.
 
 _./src/pods/post/components/like-button.component.tsx_
 
 ```tsx
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 export const LikeButton: React.FC = () => {
   const [likes, setLikes] = useState<number>(0);
 
   useEffect(() => {
-    const storedLikes = localStorage.getItem("likes");
+    const storedLikes = localStorage.getItem('likes');
     if (storedLikes) {
       setLikes(parseInt(storedLikes, 10));
     }
@@ -63,14 +63,14 @@ export const LikeButton: React.FC = () => {
   const handleLike = () => {
     const newLikes = likes + 1;
     setLikes(newLikes);
-    localStorage.setItem("likes", newLikes.toString());
+    localStorage.setItem('likes', newLikes.toString());
   };
 
   return (
     <div className="flex items-center">
       <button
         type="button"
-        className="group w-fit cursor-pointer rounded-full bg-white p-1 transition-colors duration-300"
+        className="group w-fit cursor-pointer rounded-full p-1 transition-colors duration-300"
         aria-label="Like"
         title="Like this post"
         onClick={handleLike}
@@ -99,7 +99,7 @@ export default LikeButton;
 
 ## Step 3: Use the React component in an Astro page
 
-Now let’s use the React component inside our Astro page.  
+Now let’s use the React component inside our Astro page.
 
 _src/pods/post/components/body.astro_
 
@@ -126,7 +126,7 @@ const { entry, likeCount, minReadText } = Astro.props;
 -    <div class="flex items-center">
 -      <button
 -        type="button"
--        class="group w-fit cursor-pointer rounded-full bg-white p-1 transition-colors duration-300"
+-        class="group w-fit cursor-pointer rounded-full p-1 transition-colors duration-300"
 -        aria-label="Like"
 -      >
 -        <HeartIcon class="h-5.5 w-5.5 transition-colors duration-300 group-hover:text-red-500" />
@@ -138,10 +138,10 @@ const { entry, likeCount, minReadText } = Astro.props;
   <MarkdownRenderer content={entry.content} />
 ```
 
-Now let’s test it out:  
+Now let’s test it out:
 
 ```bash
 npm run dev
 ```
 
-You can even debug it if you want… 🔍  
+You can even debug it if you want… 🔍
