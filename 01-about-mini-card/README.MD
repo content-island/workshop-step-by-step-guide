@@ -59,11 +59,11 @@ Now let’s create an instance of the client:
 _./src/lib/client.ts_
 
 ```ts
-import { createClient } from "@content-island/api-client";
-import { CONTENT_ISLAND_SECRET_TOKEN } from "astro:env/server";
+import { createClient } from '@content-island/api-client';
+import { CONTENT_ISLAND_SECRET_TOKEN } from 'astro:env/server';
 
 const client = createClient({
-  accessToken: CONTENT_ISLAND_SECRET_TOKEN,
+  accessToken: CONTENT_ISLAND_SECRET_TOKEN
 });
 
 export default client;
@@ -111,12 +111,12 @@ Next, let’s add an API to load the author profile data:
 _./src/pods/mini-bio/mini-bio.api.ts_
 
 ```ts
-import client from "#lib/client.ts";
-import type { MiniBio } from "./mini-bio.model";
+import client from '#lib/client.ts';
+import type { MiniBio } from './mini-bio.model';
 
 export const getMiniBio = async () =>
   await client.getContent<MiniBio>({
-    contentType: "MiniBio",
+    contentType: 'MiniBio'
   });
 ```
 
@@ -146,15 +146,7 @@ const { type } = Astro.props;
 
 ```
 
-We’ll start by passing this data to the **MiniBioCard** component:
-
-_./src/pods/mini-bio/mini-bio.pod.ts_
-
-```diff
-{type === 'hero' ? <MiniBioHero /> : <MiniBioCard />}
-```
-
-And binding the data inside the _MiniBioCard_ component.
+We will start by passing this data to the **MiniBioCard** component and binding the data within this component.
 
 First, define the prop:
 
