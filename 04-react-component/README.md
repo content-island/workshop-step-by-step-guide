@@ -1,18 +1,18 @@
-# React Integration
+# 04 React Integration
 
-We said that Astro can easily integrate with your favorite frameworks. Let's see how to do that with React.
+We mentioned that Astro can easily integrate with your favorite frameworks. Let’s see how to do that with React.  
 
-Just for the sake of practicing we are going to implement a _cool_ like button using React (this could be implemented using plain vanilla javascript but we want to practice React here).
+As a quick practice exercise, we’re going to implement a *cool* like button using React. (Of course, this could be done with plain vanilla JavaScript, but here we want to practice React.)  
 
 ## Step 1: Install React
 
-Let's install React integration for Astro:
+Let’s install the React integration for Astro:  
 
 ```bash
 npm install @astrojs/react
 ```
 
-Let's update the `astro.config.mjs` file to add the React integration:
+Now update the `astro.config.mjs` file to add the React integration:  
 
 ```diff
 // @ts-check
@@ -41,9 +41,9 @@ export default defineConfig({
 
 ## Step 2: Create the React component
 
-Now let's create the like button React component.
+Now let’s create the React component for our like button.  
 
-For the sake of simplicity, we will just store the likes in memory in a variable. In a real world scenario you would probably want to store this in a database.
+For simplicity, we’ll just store the number of likes in memory (using `localStorage`). In a real-world app, you’d probably want to persist this in a database.  
 
 _./src/pods/post/components/like-button.component.tsx_
 
@@ -99,11 +99,9 @@ export default LikeButton;
 
 ## Step 3: Use the React component in an Astro page
 
+Now let’s use the React component inside our Astro page.  
+
 _src/pods/post/components/body.astro_
-
-```diff
-
-```
 
 ```diff
 ---
@@ -140,10 +138,10 @@ const { entry, likeCount, minReadText } = Astro.props;
   <MarkdownRenderer content={entry.content} />
 ```
 
-And let's give a try...
+Now let’s test it out:  
 
 ```bash
 npm run dev
 ```
 
-Even we can debug it...
+You can even debug it if you want… 🔍  
