@@ -1,12 +1,12 @@
-# 03 Post detail
+# 03 Post Detail
 
 Let's display the post detail page.
 
-Right now if we try to navigate to a given post detail page, we get a 404 error.
+Right now, if we try to navigate to a specific post detail page, we get a 404 error.
 
-Let' start by create the posts detail page.
+Let's start by creating the post detail page.
 
-We could try to create something like:
+We could try something like:
 
 _./src/pages/posts/index.astro_
 
@@ -14,35 +14,36 @@ _./src/pages/posts/index.astro_
 <h1>Hey I'm the post detail</h1>
 ```
 
-But this would not work, we have a single route per posts, if we go to Content Island we can see there's a field called `slug` that we can use to create a dynamic route, and on every link we use that post.
+But this won’t work. We need one route per post. In Content Island we have a field called `slug` that we can use to create a dynamic route, and then link each post with it.
 
-What can we do? Astro offers a way to create dynamic routes using square brackets:
+So, what can we do? Astro provides a way to create dynamic routes using square brackets:
 
-- We can add one or more segments in the file name using square brackets to indicate a dynamic segment.
-- The name inside the brackets will be the name of the property we can use to access the value of that segment.
-- And using _getStaticPaths_ we can tell Astro which pages to generate at build time.
+- You can add one or more segments to the file name using square brackets to indicate a dynamic segment.
 
-If you are a Marvel fan, remember infinity wars, where Dr. Strange saw millions of futures, and only one where they win? That's what we are going to do here, we are going to tell Astro which pages to generate at build time.
+- The name inside the brackets becomes the property you can use to access that segment’s value.
+- With _getStaticPaths_, you can tell Astro which pages to generate at build time.
 
-Let's update the name of the from _index.astro_ to
+If you’re a Marvel fan, think of _Infinity War_ when Dr. Strange looked into millions of futures and saw only one where they won. That’s pretty much what we’re doing here: telling Astro exactly which pages to generate at build time.
+
+So let’s rename the file from _index.astro_ to:
 
 _[slug].astro_
 
-And now let's calculate all the paths we need to generate using _getStaticPaths_.
+And now let’s calculate all the paths we need to generate using _getStaticPaths_.
 
-In order to do that we have to:
+To do this, we need to:
 
-- Read the list of posts from the Content Island.
-- For each post, return an object with the params property containing the slug of the post.
-- Then we can use the props to render the post detail.
+- Fetch the list of posts from Content Island.
+- For each post, return an object with a `params` property containing the post’s slug.
+- Then use the props to render the post detail.
 
-We have avialable this api and model in the post-collection pod, here we could decide:
+We already have an API and model available in the post-collection pod. At this point, we could:
 
-1. Reuse that api and model on the page.
-2. Create a copy of that api and model on the page.
-3. Promoteo to common code that can be reused.
+1. Reuse that API and model on the page.
+2. Copy the API and model into the page.
+3. Promote it to shared code that can be reused.
 
-For the sake of simplicity, let's reuse the api and model on the page.
+For simplicity, let’s just reuse the API and model directly on the page.
 
 _./src/pages/posts/[slug].astro_
 
@@ -84,7 +85,7 @@ npm run dev
 
 Time to add some design :).
 
-Let' add a _hero_ component to display the post title.
+Let’s add a _hero_ component to display the post title.
 
 _./src/pages/posts/[slug].astro_
 
@@ -105,7 +106,7 @@ _./src/pages/posts/[slug].astro_
  </Layout>
 ```
 
-On the aside we have a different one, so let's define it here:
+On the aside we have different elements, so let’s define them here:
 
 _./src/pages/posts/[slug].astro_
 
@@ -135,13 +136,13 @@ _./src/pages/posts/[slug].astro_
  </Layout>
 ```
 
-Let's give a try
+Let's give it a try:
 
 ```bash
 npm run dev
 ```
 
-And now let's deep dive into the post content, we will create a separate componente for this.
+Now let’s dive into the post content. We’ll create a separate component for this.
 
 _src/pods/post/post.pod.astro_
 
@@ -209,7 +210,7 @@ const { entry } = Astro.props;
 </Layout>
 ```
 
-Kind of works but looks like hell, if we take a look to the original post, we need a header and the body, let's create two components.
+It works, but it doesn’t look great yet. If we compare it with the original post, we see that we need both a header and a body. Let’s create two new components.
 
 **src/pods/post/components/header.astro**
 
@@ -264,9 +265,9 @@ import type { Post } from '#pods/post-collection/post-collection.model';
 </section>
 ```
 
-Looking better... let's create the body component.
+Looking better… now let’s create the body component.
 
-Let's start by creating the component and define server side code.
+First, define the component and its server-side code:
 
 _src/pods/post/components/body.astro_
 
@@ -285,7 +286,7 @@ const { entry, likeCount, minReadText } = Astro.props;
 ---
 ```
 
-And the markup
+And the markup:
 
 _src/pods/post/components/body.astro_
 
@@ -310,10 +311,9 @@ _src/pods/post/components/body.astro_
   </div>
   <div>{entry.content} </div>
 </div>
-
 ```
 
-Let's use it on the post pod.
+Let’s use it inside the post pod.
 
 _src/pods/post/post.pod.astro_
 
@@ -334,7 +334,7 @@ import Header from '#pods/post/components/header.astro';
 </section>
 ```
 
-Getting better, buuuut, the content is not being rendered as HTML, for that we have created a wrapper that uses _Markded_ and _highlight.js_ to render the content properly.
+Much better, but the content is not yet being rendered as HTML. To fix this, we can use a wrapper with _Marked_ and _highlight.js_ to render the content properly.
 
 _src/pods/post/components/body.astro_
 
@@ -355,7 +355,7 @@ import type { Post } from '#pods/post-collection/post-collection.model';
 </div>
 ```
 
-Aaand... there we go:
+And… there we go:
 
 ```bash
 npm run dev
