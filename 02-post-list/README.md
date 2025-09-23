@@ -17,11 +17,11 @@ Let's add the post model.
 _./src/pods/post-collection/post-collection.model.ts_
 
 ```ts
-import type { Media } from "@content-island/api-client";
+import type { Media } from '@content-island/api-client';
 
 export interface Post {
   id: string;
-  language: "en";
+  language: 'en';
   title: string;
   slug: string;
   date: string; // Stores the date in ISO 8601 format. For example: 2021-09-10T19:30:00.000Z
@@ -37,13 +37,13 @@ And the api to load the posts.
 _./src/pods/post-collection/post-collection.api.ts_
 
 ```ts
-import client from "#lib/client.ts";
-import type { Post } from "./post-collection.model";
+import client from '#lib/client.ts';
+import type { Post } from './post-collection.model';
 
 // IMPORTANT TODO: Add sorting and paging !!
 export const getAllPosts = async () =>
   await client.getContentList<Post>({
-    contentType: "Post",
+    contentType: 'Post'
   });
 ```
 
@@ -84,9 +84,6 @@ const homeContent = {
   hero: {
     title: "John's Web Dev Blog",
     description: 'Here you can find various articles on web application development.',
-  },
-  postCollectionMini: {
-    heading: 'Popular posts',
   },
 };
 ---
@@ -143,24 +140,22 @@ And Let's go for the markup:
       />
     </div>
     <div class="flex flex-1 flex-col justify-between gap-6 p-4 @lg:flex-2">
-      <div class="flex flex-col gap-1">
-        <p class="text-xs">
-          <time datetime={post.date}>
-            {
-              new Date(post.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })
-            }
-          </time>
-        </p>
-        <div class="flex flex-col gap-2">
-          <h3 class="group-hover:text-primary-700 text-tbase-500/90 text-xl font-bold transition-colors duration-300">
-            {post.title}
-          </h3>
-          <p class="text-sm">{post.summary}</p>
-        </div>
+      <div>
+        <time datetime={post.date} class="mb-1 block text-xs">
+          {
+            new Date(post.date).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })
+          }
+        </time>
+        <h3
+          class="group-hover:text-primary-700 text-tbase-500/90 mb-2 text-xl font-bold transition-colors duration-300"
+        >
+          {post.title}
+        </h3>
+        <p class="text-sm">{post.summary}</p>
       </div>
 
       <div class="flex items-center gap-4">
