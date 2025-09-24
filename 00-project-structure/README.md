@@ -18,6 +18,24 @@ Our starting point looks like this:
 
 Now let’s explore the project structure.
 
+## Setup
+
+Let's clone our startup project, you can find it in this url:
+
+https://github.com/content-island/workshop-start-step
+
+install the dependencies
+
+```bash
+npm i
+```
+
+And run the startup project
+
+```
+npm run dev
+```
+
 ## Structure
 
 Here’s an overview of the main root folders in this project:
