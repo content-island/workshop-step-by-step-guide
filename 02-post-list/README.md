@@ -40,10 +40,11 @@ _./src/pods/post-collection/post-collection.api.ts_
 import client from '#lib/client.ts';
 import type { Post } from './post-collection.model';
 
-// IMPORTANT TODO: Add sorting and paging !!
 export const getAllPosts = async () =>
   await client.getContentList<Post>({
-    contentType: 'Post'
+    contentType: 'Post',
+    sort: { 'fields.date': 'desc' },
+    pagination: { take: 6 }
   });
 ```
 
