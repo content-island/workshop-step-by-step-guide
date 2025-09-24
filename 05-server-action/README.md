@@ -1,10 +1,10 @@
 # Server Actions
 
-In this case, we’re going to store the number of Likes on the server, but we’ll still be interacting with the client. That is, we’ll have a button that, when clicked, increments the number of likes and displays it on the screen.
+In this section, we’ll store the number of likes on the server while still interacting from the client. In other words, we’ll have a button that, when clicked, increments the number of likes and reflects the new value on screen.
 
-For simplicity, we’re going to store this value in a variable in memory (ideally, it should be saved in a database, along with a mapping of likes for each lesson ID).
+For simplicity, we’ll keep this value in memory (ideally, you’d save it in a database and maintain a mapping of likes by lesson/post ID).
 
-The first thing we do is define the server action setup (we’ll modify the astro.config file). Here we can choose whether to use Node.js, Vercel, Netlify, or Deno... In other words, once we make this choice, Astro will no longer generate a 100% static site, and we’ll need to deploy to a server that supports Node.js or whichever option we selected.
+First, let’s set up server actions by updating the Astro adapter (we’ll modify `astro.config.mjs`). Here you can choose Node.js, Vercel, Netlify, or Deno. Note that once you enable an adapter like these, Astro will no longer generate a 100% static site—you’ll need to deploy to a platform that supports the chosen runtime.
 
 ```bash
 npm install @astrojs/node
@@ -41,9 +41,9 @@ export default defineConfig({
 });
 ```
 
-Let's define the server actions. Astro uses convention over configuration, so they must be placed inside the actions folder.
+Now let’s define our server actions. Astro favors convention over configuration, so actions must live inside the `src/actions` folder.
 
-Let's first define a model:
+Start with a model:
 
 _./src/actions/model.ts_
 
@@ -53,7 +53,7 @@ export type LikesResponse = {
 };
 ```
 
-Then let's define an inmemory repository (in real life we would connect this to a database / api).
+Then, add an in‑memory repository (in a real app you’d connect this to a database or external API).
 
 _src/actions/repository.ts_
 
@@ -74,7 +74,7 @@ export const addLike = async (slug: string): Promise<number> => {
 };
 ```
 
-And now let's define the action itself:
+Now define the action itself:
 
 _src/actions/index.ts_
 
@@ -97,9 +97,9 @@ export const server = {
 };
 ```
 
-Now let's update the component to use this action:
+Next, update the component to use the action:
 
-> IMPORTANT: do not forget to build the project, to get the actions available.
+> **Important:** Don’t forget to build the project so the actions become available.
 
 _./src/pods/post/components/like-button.component.tsx_
 
@@ -133,7 +133,7 @@ import { useState, useEffect } from 'react';
   };
 ```
 
-And let's inform the _slug_ property when we use the component:
+Finally, pass the `slug` prop when using the component:
 
 _./src/pods/post/components/body.astro_
 
