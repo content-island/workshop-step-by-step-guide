@@ -2,15 +2,15 @@
 
 Alright, now that we’ve already played a bit with **Server Actions**, let’s take it one step further.  
 This time, we’re going to connect a form to send emails using [Resend](https://resend.com/).
-
 The cool part? We don’t need to install or configure anything new for Server Actions—we’ve already got that set up.
+
 The only package we’ll add is **Resend**:
 
 ```bash
 npm install resend
 ```
 
-Next, we need to set up an account on [Resend](https://resend.com/) to obtain an API key. Don't worry about domain configuration; for this example we use onboarding@resend.dev to send the email. Once you have the key, add it to your environment variables in the `.env` file.
+Next, we need to set up an account on [Resend](https://resend.com/) to get an API key. Don't worry about domain configuration; for this example, we'll use onboarding@resend.dev to send emails. Once you have the key, add it to your environment variables in the `.env` file.
 
 _.env_
 
@@ -36,14 +36,16 @@ export default defineConfig({
 });
 ```
 
-We need to add a new action in the actions directory.
+## Creating our action
 
-_./src/actions/index.ts_
+Inside _./src/actions/index.ts_, let’s drop in a new action that will handle the email sending:
 
 ```diff
 +import { Resend } from 'resend';
 +import { RESEND_API_KEY } from 'astro:env/server';
 +import { z } from 'astro:schema';
+
++const resend = new Resend(RESEND_API_KEY);
 
 export const server = {
 +  sendSubscription: defineAction({
@@ -70,14 +72,15 @@ export const server = {
 
 ```
 
-Let's understand the code above:
+Quick breakdown:
 
-- We import the Resend library and initialize it with our API key.
-- We define a server action named `sendSubscription` that accepts form data.
-- We use Zod to validate the input, ensuring that the email is in a valid format.
-- In the handler, we attempt to send an email using the Resend service and return a success or error message based on the outcome.
+- We validate the form input with Zod (so only valid emails get through)
+- We call Resend to send the email
+- We return a simple success/fail response for the UI
 
-We can now connect this action to our newsletter form.
+## Connecting the form
+
+Now we can connect this action to our newsletter forms. First, we'll update the wide newsletter component
 
 _./src/pods/newsletter/components/newsletter-wide.astro_
 
@@ -111,18 +114,20 @@ _./src/pods/newsletter/components/newsletter-wide.astro_
 +</script>
 ```
 
-Let's understand the code above:
+Here's what's happening:
 
-- We import the `actions` object from `astro:actions`, which allows us to call our server actions from the client side.
-- We add an event listener to the form's submit event to handle the form submission.
-- We prevent the default form submission behavior to handle it via JavaScript.
-- We create a `FormData` object from the form and call the `sendSubscription` action with this data.
-- We check the result of the action call, and if it was successful, we reset the form.
+- We import the `actions` object from `astro:actions`, which lets us call our server actions from the client side
+- We add an event listener to the form's submit event to handle the form submission
+- We prevent the default form submission behavior so we can handle it with JavaScript
+- We create a `FormData` object from the form and call the `sendSubscription` action with this data
+- We check the result of the action call, and if it was successful, we reset the form
 
-Astro allows you to use server actions in the HTML form directly, but in this case we used JavaScript to have more control over the submission process and handle the response accordingly.
+Astro lets you use server actions directly in HTML forms, but here we're using JavaScript to have more control over the submission process and handle the response properly.
 
-Now we can use the same handleSubmit function in the other newsletter component.
-First, we need to add new file `newsletter.business.ts` to export the handleSubmit function.
+## Reusing the submit logic
+
+Now we can reuse the same handleSubmit function in the other newsletter component.
+First, we'll create a new file `newsletter.business.ts` to export the handleSubmit function.
 
 _./src/pods/newsletter/components/newsletter.business.ts_
 
@@ -164,7 +169,8 @@ _./src/pods/newsletter/components/newsletter-wide.astro_
 </script>
 ```
 
-And finally, we can also use this function in the other newsletter component.
+Finally, we'll use this same function in the other newsletter component.
+
 _./src/pods/newsletter/components/newsletter-mini.astro_
 
 ```diff
@@ -186,3 +192,5 @@ _./src/pods/newsletter/components/newsletter-mini.astro_
 +  }
 +</script>
 ```
+
+And that’s it! We now have a working newsletter form that uses Astro Server Actions + Resend to actually send emails. Pretty slick, right?
