@@ -1,8 +1,10 @@
-# Server Action Form
+# Server Action Form with Resend
 
-This example demonstrates how to use server actions in a form submission context with Resend. It includes a simple form that allows users to submit their email.
+Alright, now that we’ve already played a bit with **Server Actions**, let’s take it one step further.  
+This time, we’re going to connect a form to send emails using [Resend](https://resend.com/).
 
-We need to install the Resend package to handle email sending:
+The cool part? We don’t need to install or configure anything new for Server Actions—we’ve already got that set up.
+The only package we’ll add is **Resend**:
 
 ```bash
 npm install resend
@@ -118,3 +120,69 @@ Let's understand the code above:
 - We check the result of the action call, and if it was successful, we reset the form.
 
 Astro allows you to use server actions in the HTML form directly, but in this case we used JavaScript to have more control over the submission process and handle the response accordingly.
+
+Now we can use the same handleSubmit function in the other newsletter component.
+First, we need to add new file `newsletter.business.ts` to export the handleSubmit function.
+
+_./src/pods/newsletter/components/newsletter.business.ts_
+
+```ts
+export const handleSubmit = async (event: Event) => {
+  event.preventDefault();
+  const form = event.target as HTMLFormElement;
+  const sendFormData = new FormData(form);
+  const result = await actions.sendSubscription(sendFormData);
+  if (result.data?.success) {
+    form.reset();
+  }
+};
+```
+
+Now we can import and use this function in newsletter-wide.astro.
+
+_./src/pods/newsletter/components/newsletter-wide.astro_
+
+```diff
+<script>
+-  import { actions } from 'astro:actions';
++  import { handleSubmit } from '../newsletter.business';
++  const form = document.getElementById('newsletter-form-wide');
+
+-  const handleSubmit = async (event: Event) => {
+-    event.preventDefault();
+-    const form = event.target as HTMLFormElement;
+-    const sendFormData = new FormData(form);
+-    const result = await actions.sendSubscription(sendFormData);
+-    if (result.data?.success) {
+-      form.reset();
+-    }
+-  };
+
+  if (form && form instanceof HTMLFormElement) {
++    form.addEventListener('submit', e => handleSubmit(e));
+  }
+</script>
+```
+
+And finally, we can also use this function in the other newsletter component.
+_./src/pods/newsletter/components/newsletter-mini.astro_
+
+```diff
+    <form
+      class="border-text relative flex items-center justify-between gap-2 rounded-xl border py-2 pr-2 pl-4"
++      id="newsletter-form-mini"
++      method="POST"
+      >
+     ...
+    </form>
+</section>
+
++<script>
++  import { handleSubmit } from '../newsletter.business';
++  const form = document.getElementById('newsletter-form-mini');
+
++  if (form && form instanceof HTMLFormElement) {
++    form.addEventListener('submit', e => handleSubmit(e));
++  }
++</script>
+```
