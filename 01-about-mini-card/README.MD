@@ -122,7 +122,7 @@ export const getMiniBio = async () =>
 
 Now let’s use it in the mini-bio pod:
 
-_./src/pods/mini-bio/mini-bio.pod.ts_
+_./src/pods/mini-bio/mini-bio.pod.astro_
 
 ```diff
 ---

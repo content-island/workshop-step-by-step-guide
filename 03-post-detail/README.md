@@ -27,7 +27,7 @@ If you’re a Marvel fan, think of _Infinity War_ when Dr. Strange looked into m
 
 So let’s rename the file from _index.astro_ to:
 
-_[slug].astro_
+_./src/pages/posts/[slug].astro_
 
 And now let’s calculate all the paths we need to generate using _getStaticPaths_.
 
@@ -49,8 +49,8 @@ _./src/pages/posts/[slug].astro_
 
 ```astro
 ---
-import { getAllPosts } from '#pods/post-collection.api';
-import type { Post } from '#pods/post-collection.model';
+import { getAllPosts } from '#pods/post-collection/post-collection.api';
+import type { Post } from '#pods/post-collection/post-collection.model';
 
 // Generate all possible paths
 export async function getStaticPaths() {
