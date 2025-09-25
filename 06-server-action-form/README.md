@@ -15,6 +15,8 @@ Next, we need to set up an account on [Resend](https://resend.com/) to get an AP
 _.env_
 
 ```
+FROM_EMAIL=your_verified_email_here
+TO_EMAIL=recipient_email_here
 RESEND_API_KEY=your_resend_api_key_here
 ```
 
@@ -31,6 +33,24 @@ export default defineConfig({
 +        optional: false,
 +        default: 'INFORM_VALID_TOKEN',
 +      }),
++    FROM_EMAIL: envField.string({
++        context: 'server',
++        access: 'secret',
++        optional: false,
++        default: 'INFORM_VALID_EMAIL',
++      }),
++    TO_EMAIL: envField.string({
++        context: 'server',
++        access: 'secret',
++        optional: false,
++        default: 'INFORM_VALID_EMAIL',
++      }),
+      CONTENT_ISLAND_SECRET_TOKEN: envField.string({
+        context: 'server',
+        access: 'secret',
+        optional: false,
+        default: 'INFORM_VALID_TOKEN',
+      }),
     },
   },
 });
@@ -42,12 +62,22 @@ Inside _./src/actions/index.ts_, let’s drop in a new action that will handle t
 
 ```diff
 +import { Resend } from 'resend';
-+import { RESEND_API_KEY } from 'astro:env/server';
++import { RESEND_API_KEY, FROM_EMAIL, TO_EMAIL } from 'astro:env/server';
 +import { z } from 'astro:schema';
 
 +const resend = new Resend(RESEND_API_KEY);
 
 export const server = {
+  addLike: defineAction<LikesResponse>({
+    async handler(slug) {
+      return { likes: await addLike(slug) };
+    },
+  }),
+  getLikes: defineAction<LikesResponse>({
+    async handler(slug) {
+      return { likes: await getLikes(slug) };
+    },
+  }),
 +  sendSubscription: defineAction({
 +    accept: 'form',
 +    input: z.object({
@@ -57,8 +87,8 @@ export const server = {
 +      try {
 +        const { email } = input;
 +        await resend.emails.send({
-+          from: 'Acme <onboarding@resend.dev>',
-+          to: 'Change to your Resend account email to receive the test email',
++          from: FROM_EMAIL,
++          to: TO_EMAIL,
 +          subject: 'Hello World',
 +          html: `<p>Congrats on sending your <strong>${email}</strong>!</p>`,
 +        });
@@ -90,6 +120,7 @@ _./src/pods/newsletter/components/newsletter-wide.astro_
 +      id="newsletter-form-wide"
 +      method="POST"
     >
+    //(...)
     </form>
 </section>
 
