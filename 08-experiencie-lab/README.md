@@ -1,52 +1,51 @@
 # 08 Experience Lab
 
-We have learned a lot... but we have not yet applied our knowledge in a real-world scenario.
+We’ve learned a lot… but we haven’t yet applied our knowledge to a real-world scenario.  
 
-Let's get our hands dirty in this hands-on lab!
+Time to get our hands dirty in this hands-on lab!  
 
 ## Lab Overview
 
-If you click on the about page, you will an empty page, we want to reflect the experience list of the user in this page.
+If you click on the About page, you’ll see an empty page. Our goal is to display the user’s list of experiences there.  
 
-We will use the knowledge we have acquired in the previous modules to implement this feature.
+We’ll use the knowledge gained in the previous modules to implement this feature.  
 
-We will explain you the issue, then add tips and hints to help you solve it.
+First, we’ll explain the problem. Then we’ll provide tips and hints to help you solve it.  
 
 ## Goal
 
-Let's run the project.
+Let’s run the project:  
 
 ```bash
 npm run dev
-```
+```  
 
-If you click on the about page, you will see an empty page.
+If you click on the About page, you should see an empty page.  
 
-![Empty experience placeholder](./content/empty-experience.jpg)
+![Empty experience placeholder](./content/empty-experience.jpg)  
 
-Our goal is to show something like:
+Our goal is to display something like this:  
 
-![Full list of experiences](./content/experience-completed.jpg)
+![Full list of experiences](./content/experience-completed.jpg)  
 
-## Loading data
+## Loading Data
 
-We have already our content island project connected to a Contentful project.
+We already have our Content Island project connected to Contentful.  
 
-We can see that in the model we've got a list of experiences and an experiencie model.
+Looking at the model, we can see that it includes both a list of experiences and an **Experience** model.  
 
-![Experience and the experiencie model](./content/model.jpg)
+![Experience and the Experience model](./content/model.jpg)  
 
-We are go to start by loading the data from Contentful.
+We’ll start by loading data from Contentful.  
 
-We've got an _experience-collection_ pod.
+We have an _experience-collection_ pod available.  
 
-Let's define a model, in Content Island we have got:
+Let’s define a model. In Content Island we have:  
 
-- And Experience Section model that will load all the experiences plus the heading to be used for the section.
+- An **Experience Section** model that loads all experiences plus the section heading.  
+- An **Experience** model that represents a single experience.  
 
-- An Experience model that will represent a single experience.
-
-If you are in Content Island you can generate a model that will include the list of nested collection, so the model would be something like.
+In Content Island, you can generate a model that includes nested collections, so the model would look like this:  
 
 _./src/pods/experience-collection/experience-collection.model.ts_
 
@@ -68,7 +67,7 @@ export interface ExperienceSection {
 }
 ```
 
-Now let's load the data from Contentful, this time we will indicate that we wat to load the nested collection.
+Now let’s load the data from Contentful. This time, we’ll indicate that we want to load the nested collection.  
 
 _./src/pods/experience-collection/experience-collection.api.ts_
 
@@ -83,7 +82,7 @@ export const getExperience = async () =>
   });
 ```
 
-And let's use it in our component.
+Now let’s use it inside our component:  
 
 _./src/pods/experience-collection/experience-collection.pod.astro_
 
@@ -101,7 +100,7 @@ _./src/pods/experience-collection/experience-collection.pod.astro_
 +  <ul>
 +    {experienceContent.experienceCollection.map((experience) => (
 +      <li>
-+        <p>{experience.role} @ {experience.company}</h3>
++        <p>{experience.role} @ {experience.company}</p>
 +        <p>{experience.period}</p>
 +        <p>{experience.description}</p>
 +      </li>
@@ -110,11 +109,11 @@ _./src/pods/experience-collection/experience-collection.pod.astro_
 </section>
 ```
 
-Now if you go to the about page, you should see a list of experiences (With node desing).
+If you now go to the About page, you should see a list of experiences (without design yet).  
 
-## Adding styles
+## Adding Styles
 
-Now let's add some styles to our component.
+Let’s improve the styles of our component:  
 
 ```diff
 <section class="flex flex-1 flex-col gap-10 px-6" aria-labelledby="experience-section-heading">
@@ -123,7 +122,7 @@ Now let's add some styles to our component.
 -  <ul>
 -    {experienceContent.experienceCollection.map((experience) => (
 -      <li>
--        <p>{experience.role} @ {experience.company}</h3>
+-        <p>{experience.role} @ {experience.company}</p>
 -        <p>{experience.period}</p>
 -        <p>{experience.description}</p>
 -      </li>
