@@ -31,7 +31,6 @@ Next, we’ll define this variable as a **server environment variable** in Astro
 _./astro.config.mjs_
 
 ```diff
-// @ts-check
 - import { defineConfig } from 'astro/config';
 + import { defineConfig, envField } from "astro/config";
 import tailwindcss from '@tailwindcss/vite';
@@ -154,7 +153,6 @@ _./src/pods/mini-bio/components/mini-bio-card.astro_
 
 ```diff
 ---
-import ContactButtons from '#components/contact-buttons.astro';
 import ShapeOval from '#assets/shapes/oval.svg';
 import ShapeRectangle from '#assets/shapes/rectangle.svg';
 + import type { MiniBio } from '../mini-bio.model';
@@ -201,6 +199,10 @@ Now let’s move on and display the rest of the content:
 _./src/pods/mini-bio/components/mini-bio-card.astro_
 
 ```diff
+---
++ import ContactButtons from '#components/contact-buttons.astro';
+---
+
     <h2 class="font-geist w-full font-bold" id="about-me-aside-heading">{content.title}</h2>
 
 +    <div class="flex flex-col items-center justify-center gap-2 text-center">
