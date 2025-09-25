@@ -106,6 +106,7 @@ npm run dev
 ```
 
 Let's give it some style, we will create a component that will show a post card.
+We create a new folder inside the post-collection pod called components and inside we create a new file called post-card.astro.
 
 First we will define the code in the fences:
 
