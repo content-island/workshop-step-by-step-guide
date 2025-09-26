@@ -160,7 +160,7 @@ import ShapeRectangle from '#assets/shapes/rectangle.svg';
 + import type { MiniBio } from '../mini-bio.model';
 
 + interface Props {
-+  content: MiniBio | null;
++  content: MiniBio;
 + }
 + const { content } = Astro.props;
 ---
@@ -269,7 +269,7 @@ import Hero from '#components/hero.astro';
 +      </p>
 +    </div>
 +  </div>
-</Hero>
++ </Hero>
 ```
 
 Finally, check the result:
