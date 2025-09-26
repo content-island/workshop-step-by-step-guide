@@ -110,7 +110,7 @@ We create a new folder inside the post-collection pod called components and insi
 
 First we will define the code in the fences:
 
-_./src/components/post-card.astro_
+_./src/pods/post-collection/components/post-card.astro_
 
 ```astro
 ---
