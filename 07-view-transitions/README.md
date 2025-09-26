@@ -85,8 +85,8 @@ _src/components/header.astro_
 +  const initThemeToggle = () => {
 +    const button = document.getElementById("theme-toggle");
 +    const html = document.documentElement;
-+    const storedTheme = localStorage.getItem("theme");+
-+    
++    const storedTheme = localStorage.getItem("theme");
++
 +    if (storedTheme) {
 +      html.classList.toggle("dark", storedTheme === "dark");
 +    }
@@ -98,7 +98,7 @@ _src/components/header.astro_
 +    }
 +
 +    // Clean up previous event listener if it exists
-+    button?.removeEventListener("click", handleThemeToggle);+
++    button?.removeEventListener("click", handleThemeToggle);
 +
 +    // Add new event listener
 +    button?.addEventListener("click", handleThemeToggle);

@@ -160,9 +160,11 @@ Astro lets you use server actions directly in HTML forms, but here we're using J
 Now we can reuse the same handleSubmit function in the other newsletter component.
 First, we'll create a new file `newsletter.business.ts` to export the handleSubmit function.
 
-_./src/pods/newsletter/components/newsletter.business.ts_
+_./src/pods/newsletter/newsletter.business.ts_
 
 ```ts
+import { actions } from 'astro:actions';
+
 export const handleSubmit = async (event: Event) => {
   event.preventDefault();
   const form = event.target as HTMLFormElement;
@@ -182,7 +184,7 @@ _./src/pods/newsletter/components/newsletter-wide.astro_
 <script>
 -  import { actions } from 'astro:actions';
 +  import { handleSubmit } from '../newsletter.business';
-+  const form = document.getElementById('newsletter-form-wide');
+  const form = document.getElementById('newsletter-form-wide');
 
 -  const handleSubmit = async (event: Event) => {
 -    event.preventDefault();
@@ -195,7 +197,7 @@ _./src/pods/newsletter/components/newsletter-wide.astro_
 -  };
 
   if (form && form instanceof HTMLFormElement) {
-+    form.addEventListener('submit', e => handleSubmit(e));
+     form.addEventListener('submit', e => handleSubmit(e));
   }
 </script>
 ```
