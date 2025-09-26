@@ -158,7 +158,7 @@ Astro lets you use server actions directly in HTML forms, but here we're using J
 ## Reusing the submit logic
 
 Now we can reuse the same handleSubmit function in the other newsletter component.
-First, we'll create a new file `newsletter.business.ts` to export the handleSubmit function.
+First, we will create a new file named `newsletter.business.ts` in the newsletter folder to export the handleSubmit function.
 
 _./src/pods/newsletter/newsletter.business.ts_
 
