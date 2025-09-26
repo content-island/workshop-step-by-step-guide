@@ -79,21 +79,21 @@ Now define the action itself:
 _src/actions/index.ts_
 
 ```ts
-import { defineAction } from "astro:actions";
-import { addLike, getLikes } from "./repository";
-import type { LikesResponse } from "./model";
+import { defineAction } from 'astro:actions';
+import { addLike, getLikes } from './repository';
+import type { LikesResponse } from './model';
 
 export const server = {
   addLike: defineAction<LikesResponse>({
     async handler(slug) {
       return { likes: await addLike(slug) };
-    },
+    }
   }),
   getLikes: defineAction<LikesResponse>({
     async handler(slug) {
       return { likes: await getLikes(slug) };
-    },
-  }),
+    }
+  })
 };
 ```
 
@@ -120,7 +120,7 @@ import { useState, useEffect } from 'react';
 -    if (storedLikes) {
 -      setLikes(parseInt(storedLikes, 10));
 -    }
-+    actions.getLikes().then(response => {
++    actions.getLikes(slug).then(response => {
 +      setLikes(response?.data?.likes || 0);
 +    });
   }, []);
